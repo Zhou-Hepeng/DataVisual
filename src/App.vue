@@ -1,22 +1,23 @@
 <template>
   <div id="app">
     <div class="left-wrapper">
-      <LookArticals></LookArticals>
-      <EchartImg></EchartImg>
+      <LookArticals :lookActives="lookActives"></LookArticals>
+      <EchartImg :Proportion="Proportion"></EchartImg>
     </div>
     <div class="center-wrapper">
-      <TitleName></TitleName>
-      <DataMap></DataMap>
+      <TitleName :number="number"></TitleName>
+      <DataMap :userActives="userActives"></DataMap>
     </div>
     <div class="right-wrapper">
-      <UserActives></UserActives>
-      <Interaction></Interaction>
-      <RankVideos></RankVideos>
+      <UserActives :userActives="userActives"></UserActives>
+      <Interaction :userRank="userRank"></Interaction>
+      <RankVideos :rankVideos="rankVideos"></RankVideos>
     </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
 import DataMap from './components/DataMap'
 //左侧内容
 import LookArticals from './components/LookArticals'
@@ -27,6 +28,7 @@ import TitleName from './components/TitleName'
 import UserActives from './components/UserActives'
 import Interaction from './components/Interaction'
 import RankVideos from './components/RankVideos'
+import data from './data/data.js'
 
 export default {
   name: 'app',
@@ -43,9 +45,32 @@ export default {
     RankVideos
 
   },
+  data(){
+    return {
+        lookActives:[],
+        Proportion:[],
+        number:'',
+        userActives:[],
+        userRank:[],
+    }
+  },
+  created(){
+    this.lookActives = data.lookActives
+    this.Proportion = data.proportion
+    this.number = 394084647
+    this.userActives = data.userActives
+    this.userRank = data.userRank
+    this.rankVideos = data.rankVideos
+    console.log(data)
+    axios.get('https://dealer-api.360che.com/AppleTV/GetClueProvinceList.aspx').then((res) => {
+      console.log(res.data)
+        // this.geoCoordMap = res.data
+        // this.$nextTick(() => {
+        //   this._getMyChart()
+        // })
+    })
+  },
   mounted(){
-    // alert(window.screen.height)
-    // alert(window.screen.width)
   }
 }
 </script>
@@ -74,15 +99,12 @@ export default {
   a:link,a:visited{text-decoration: none;color:none;}
   img{ vertical-align: middle;}
   #app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
     width:1920px;
     height:1080px;
     overflow-x: auto;
     background:url('./assets/bg.png') no-repeat 0 0;
-    background-size: 100% 100%;
+    background-size: cover;
   }
 </style>

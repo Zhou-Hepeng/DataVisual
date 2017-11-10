@@ -51,25 +51,30 @@ export default {
     let dataIndex = -1
     let map = this.$refs.map
     let dataLen = map.options.series[0].data.length
-    console.log(map.options.series[0])
+
     setInterval(() => {
       map.dispatchAction({
         type: 'downplay',
         seriesIndex: 0,
-        dataIndex
+        dataIndex,
+        symbolSize: 40,
       })
       dataIndex = (dataIndex + 1) % dataLen
       map.dispatchAction({
         type: 'highlight',
         seriesIndex: 0,
-        dataIndex
+        dataIndex,
+        symbolSize: 40,
+        data:{
+          value:99
+        }
       })
-      console.log(dataIndex,'dataIndex')
       // 显示 tooltip
       map.dispatchAction({
         type: 'showTip',
         seriesIndex: 0,
-        dataIndex
+        dataIndex,
+        symbolSize: 40,
       })
       //显示默认地区
       // var selected = param.selected;
@@ -79,7 +84,7 @@ export default {
       //         str += p + ' ';
       //     }
       // }
-    }, 1000)
+    }, 5000)
     this.connected = true
   },
   watch: {
@@ -96,11 +101,17 @@ export default {
 .map{
   width:844px;
   height:456px;
-  margin-top: 79px;
+  margin-top: 30px;
   background-color:rgba(0,0,0,0);
 }
 .echarts{
-  margin:0 auto;
+  width:800px;
+  height:600px;
+  /*margin:0 auto;*/
+}
+.echarts canvas{
+  width:800px;
+  height:600px;
 }
 .echarts > div{
   display: block;

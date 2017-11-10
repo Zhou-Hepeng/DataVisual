@@ -5,7 +5,6 @@ export default {
       let name = params.name
       let percent = params.percent
       let index = params.dataIndex
-      console.log(params)
       let color = ['#00FFE8', '#FFDF00', '#FF4989', '#fff']
       return `<span>${name}</span></br><span style="color: ${
         color[index]
@@ -13,8 +12,9 @@ export default {
     },
     position: function(pos, params, dom, rect, size) {
       var obj = {}
-      obj[['right', 'left'][+(pos[0] < size.viewSize[0] / 2)]] = 5
-      obj[['bottom', 'top'][+(pos[1] < size.viewSize[1] / 2)]] = 5
+      obj[['right', 'left'][+(pos[0] < size.viewSize[0] / 2)]] = 130
+      obj[['bottom', 'top'][+(pos[1] < size.viewSize[1] / 2)]] = 100
+      console.log(obj,'obj')
       return obj
     },
     backgroundColor: 'none',

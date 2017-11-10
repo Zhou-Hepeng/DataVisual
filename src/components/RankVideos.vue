@@ -1,46 +1,48 @@
 <template>
   <div class="rank-videos">
     <module-title :title="videoTitle" class="rank-videos-title"></module-title>
-      <ul class="rank-videos-content">
-        <li>
-          <em>1</em>
-          <span>骑手搭卡车“顺风车”，惨遭碾压断10根肋骨</span>
-        </li>
-        <li>
-          <em>2</em>
-          <span>实拍二师兄冒死跳车，300斤肉直接往地上摔</span>
-        </li>
-        <li>
-          <em>3</em>
-          <span>司机太拼了，轮胎报废了也要上坡，就是不信</span>
-        </li>
-        <li>
-          <em>4</em>
-          <span>交警快来，快来呀！这小子挑衅你们</span>
-        </li>
-        <li>
-          <em>5</em>
-          <span>只有敢这么转弯的人才能被称为老司机，我算</span>
-        </li>
-      </ul>
+    <div class="rank-videos-content">
+      <div class="wrapper swiper-container swiper-container-vertical swiper-no-swiping" id="swiperContent">
+        <div class="content swiper-wrapper">
+          <ul class="swiper-slide" v-for="item in rankVideos.content">
+            <li v-for="(ele,index) in item">
+              <em>{{index+1}}</em>
+              <span>{{ele}}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
 import ModuleTitle from './ModuleTitle'
 export default {
+  props:["rankVideos"],
   components: {
     ModuleTitle
   },
   data: () => ({
     videoTitle: '每小时热门转发视频排行'
-  })
+  }),
+  mounted(){
+    var swiper = new Swiper('#swiperContent', {
+        spaceBetween: 30,
+        loop:true,
+        paginationClickable: true,
+        spaceBetween: 0,
+        autoplay: 3000,
+        centeredSlides: true,
+        autoplayDisableOnInteraction: false,
+    });
+  }
 }
 </script>
 <style scoped>
 .rank-videos{
   width: 480px;
   height: 304px;
-  margin-top: 59px;
+  margin-top: 30px;
 }
 .rank-videos-title{
   padding-left: 70px;
@@ -53,8 +55,24 @@ export default {
   letter-spacing: 0;
   line-height: 42px;
   text-align: left;
+  clear: both;
+  overflow:hidden;
   background: url('../assets/SmallModuleBg.png') no-repeat;
   background-size: 480px 250px;
+}
+.wrapper{
+  height:100%;
+  overflow: hidden;
+}
+.content{
+  width:1000%;
+  overflow: hidden;
+}
+.content ul{
+  width:100%;
+}
+.rank-videos-content ul{
+  float:left
 }
 .rank-videos-content li{
   white-space: nowrap;

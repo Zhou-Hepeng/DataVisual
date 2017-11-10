@@ -1,24 +1,35 @@
 <template>
   <div class="user-actives">
     <module-title :title="userActivesTitle" class="user-actives-title"></module-title>
-    <ul class="user-actives-content">
-      <li>「<span class="users">蛤蟆哥</span>」发表了个帖子「<span class="posts">戴眼镜是种怎样的体验？</span>」</li>
-      <li>「<span class="users">哈哈哈哈</span>」关注了「<span class="users">蛤蟆哥</span>」</li>
-      <li>「<span class="users">蛤蟆哥</span>」发表了个帖子「<span class="posts">戴眼镜是种怎样的体验？</span>」</li>
-      <li>「<span class="users">哈哈哈哈</span>」关注了「<span class="users">蛤蟆哥</span>」</li>
-      <li>「<span class="users">哈哈哈哈</span>」点赞了「<span class="users">蛤蟆哥</span>」</li>
-    </ul>
+    <div class="wrapper">
+      <div class="content swiper-container swiper-container-vertical swiper-no-swiping" id="swiper">
+        <ul class="user-actives-content swiper-wrapper">
+          <li class="swiper-slide" v-for="item in userActives">「<span class="users">{{item.name}}</span>」{{item.action}}「<span class="posts">{{item.title}}</span>」</li>
+        </ul>
+      </div>
+    </div>
   </div>
 </template>
 <script>
 import ModuleTitle from './ModuleTitle'
 export default {
+  props:['userActives'],
   components: {
     ModuleTitle
   },
   data: () => ({
     userActivesTitle: '用户行为'
-  })
+  }),
+  mounted(){
+    //新闻条滚动
+    let swiperNew = new Swiper('#swiper', {
+        direction : 'vertical',
+        autoplay: 3000,
+        centeredSlides: true,
+        slidesPerView: 5,
+        loop:true
+    });
+  }
 }
 </script>
 <style scoped>
@@ -31,18 +42,31 @@ export default {
 .user-actives-title{
   padding-left: 120px;
 }
-.user-actives-content{
+.wrapper{
+  position: relative;
   height: 210px;
-  padding: 15px 40px 25px;
+  padding: 18px 40px 25px;
   font-size: 16px;
   color: #FFFFFF;
   letter-spacing: 0;
   line-height: 42px;
   text-align: left;
+  overflow: hidden;
   background: url('../assets/SmallModuleBg.png') no-repeat;
   background-size: 476px 250px;
 }
+.content{
+  height:200px;
+  overflow: hidden;
+}
+.user-actives-content{
+  height: 1200%;
+  overflow: hidden;
+}
 .user-actives-content li{
+  display: block;
+  height: 40px;
+  line-height:40px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -55,4 +79,5 @@ export default {
   font-weight: bold;
   color: #00FFE8;
 }
+
 </style>

@@ -4,25 +4,25 @@
 		</div>
 		<div class="data">
 			<span>服务卡友</span>
-			<p>{{thousandBitSeparator(number)}}</p>
+			<p>{{thousandBitSeparator(sum)}}</p>
 		</div>
 	</div>
 </template>
 <script>
 	export default {
+		props:['number'],
 		data(){
 			return {
-				number:1312017627
+				sum:'0'
 			}
 		},
 		created(){
-
+			this.sum = this.number
 		},
 		mounted(){
 			setInterval(() => {
-				console.log(Math.floor(Math.random() * 150 + 30))
-				this.number += Math.floor(Math.random() * 50 + 100)
-			},1000)
+				this.sum += Math.floor(Math.random() * 50 + 100)
+			},5000)
 		},
 		methods:{
 			thousandBitSeparator(num) {
@@ -44,11 +44,11 @@
 	}
 	.data{
 		width:654px;
-		margin:46px auto 0;
+		margin:46px auto;
 		text-align: left;
 	}
 	.data span{
-		font-size: 20px;
+		font-size: 24px;
 		color: #00FFE8;
 		line-height: 20px;
 	}

@@ -1,73 +1,57 @@
 <template>
   <div class="look-artical">
     <module-title :title="articalTitle" class="artical-title"></module-title>
-    <ul class="article-content">
-      <li>
-        <swipe :options="swipeOptions.speedOption1">
-          <swipe-item class="swipe-item">图森推自动驾驶卡车工信部部长现场试乘1图森推自动驾驶卡车工信部部长现场试乘1图森推自动驾驶卡车工信部部长现场试乘1图森推自动驾驶卡车工信部部长现场试乘1</swipe-item>
-          <swipe-item>图森推自动驾驶卡车工信部部长现场试乘2</swipe-item>
-          <swipe-item>图森推自动驾驶卡车工信部部长现场试乘3</swipe-item>
-        </swipe>
-      </li>
-      <li>
-        <swipe :options="swipeOptions.speedOption2">
-          <swipe-item>图森推自动驾驶卡车工信部部长现场试乘1</swipe-item>
-          <swipe-item>图森推自动驾驶卡车工信部部长现场试乘2</swipe-item>
-        </swipe>
-      </li>
-      <li>
-        <swipe :options="swipeOptions.speedOption3">
-          <swipe-item>图森推自动驾驶卡车工信部部长现场试乘1</swipe-item>
-          <swipe-item>图森推自动驾驶卡车工信部部长现场试乘2</swipe-item>
-        </swipe>
-      </li>
-      <li>
-        <swipe :options="swipeOptions.speedOption4">
-          <swipe-item>图森推自动驾驶卡车工信部部长现场试乘1</swipe-item>
-          <swipe-item>图森推自动驾驶卡车工信部部长现场试乘2</swipe-item>
-        </swipe>
-      </li>
-      <li>
-        <swipe :options="swipeOptions.speedOption5">
-          <swipe-item>图森推自动驾驶卡车工信部部长现场试乘1</swipe-item>
-          <swipe-item>图森推自动驾驶卡车工信部部长现场试乘2</swipe-item>
-        </swipe>
-      </li>
-    </ul>
+    <div class="article-content">
+      <div class="wrapper">
+        <ul class="content">
+          <li v-for="(item,index) in lookActives" :options="swipeOptions[index]">
+            <swipe>
+              <swipe-item class="swipe-item" v-for="ele in item">{{ele}}</swipe-item>
+            </swipe>
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
 </template>
 <script>
 import ModuleTitle from './ModuleTitle'
 export default {
+  props:['lookActives'],
+  created(){
+    // console.log(this.lookActives,'lookActives')
+  },
   components: {
     ModuleTitle
   },
-  data: () => ({
-    swipeOptions: {
-      speedOption1: {
-        auto: 1000
-      },
-      speedOption2: {
-        auto: 2000
-      },
-      speedOption3: {
-        auto: 1500
-      },
-      speedOption4: {
-        auto: 2500
-      },
-      speedOption5: {
-        auto: 5000
-      },
-      speedOption6: {
-        auto: 1000
-      },
-      speedOption7: {
-        auto: 1000
-      }
-    },
-    articalTitle: '用户正在浏览的文章'
-  })
+  data(){
+    return {
+      swipeOptions: [
+        {
+          auto: 1000
+        },
+        {
+          auto: 2000
+        },
+        {
+          auto: 1500
+        },
+        {
+          auto: 2500
+        },
+        {
+          auto: 5000
+        },
+        {
+          auto: 1000
+        },
+        {
+          auto: 1000
+        }
+      ],
+      articalTitle: '用户正在浏览的文章'
+    }
+  }
 }
 </script>
 <style scoped>
@@ -81,16 +65,44 @@ export default {
 .artical-title{
   padding-left: 80px;
 }
+
 .article-content{
-  padding: 15px 40px;
+  padding: 15px 27px 30px 20px;
   font-size: 16px;
   color: #FFFFFF;
   letter-spacing: 0;
   line-height: 42px;
-  height: 300px;
+  height: 290px;
   background: url('../assets/NowBrower.png') no-repeat;
   background-size: 476px 330px;
 }
+.wrapper{
+  height:100%;
+  padding-left:20px;
+  /*padding-bottom:10px;*/
+  /*box-shadow: -11px 9px 40px rgba(0,255,232,.1);*/
+  animation: head 3s ease-out 1.2s infinite;
+}
+  @keyframes head {
+    0% {
+      box-shadow: 0px -5px 15px rgba(0,255,232,.2);
+    }
+    20% {
+      box-shadow: -5px 0px 30px rgba(0,255,232,.4);
+    }
+    40% {
+      box-shadow: -9px 5px 45px rgba(0,255,232,.6);
+    }
+    60% {
+      box-shadow: -11px 10px 45px rgba(0,255,232,.6);
+    }
+    80% {
+      box-shadow: -9px 5px 30px rgba(0,255,232,.4);
+    }
+    80% {
+      box-shadow: -5px -5px 15px rgba(0,255,232,.2);
+    }
+  }
 .article-content li .swipe-item{
   white-space: nowrap;
   overflow: hidden;
