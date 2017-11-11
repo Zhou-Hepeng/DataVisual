@@ -5,18 +5,12 @@ export default {
       let name = params.name
       let percent = params.percent
       let index = params.dataIndex
-      let color = ['#00FFE8', '#FFDF00', '#FF4989', '#fff']
+      let color = ['#00FFE8', '#FFDF00', '#FF4989', '#ff6600']
       return `<span>${name}</span></br><span style="color: ${
         color[index]
       };font-size: 30px">${percent}%</span>`
     },
-    position: function(pos, params, dom, rect, size) {
-      var obj = {}
-      obj[['right', 'left'][+(pos[0] < size.viewSize[0] / 2)]] = 130
-      obj[['bottom', 'top'][+(pos[1] < size.viewSize[1] / 2)]] = 100
-      console.log(obj,'obj')
-      return obj
-    },
+    position: 'top',
     backgroundColor: 'none',
     textStyle: {
       fontSize: 16,
@@ -50,14 +44,14 @@ export default {
           show: false
         },
         emphasis: {
-          show: true
+          show: false
         }
       },
       data: [
-        { value: 10, name: '载货车' },
-        { value: 5, name: '自卸车' },
+        { value: 62, name: '载货车' },
+        { value: 17, name: '自卸车' },
         { value: 15, name: '牵引车' },
-        { value: 25, name: '其他' }
+        { value: 6, name: '其他' }
       ]
     }
   ]

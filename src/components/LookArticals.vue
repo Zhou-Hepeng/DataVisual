@@ -4,9 +4,9 @@
     <div class="article-content">
       <div class="wrapper">
         <ul class="content">
-          <li v-for="(item,index) in lookActives" :options="swipeOptions[index]">
-            <swipe>
-              <swipe-item class="swipe-item" v-for="ele in item">{{ele}}</swipe-item>
+          <li  v-for="(item,index) in lookActives">
+            <swipe :options="swipeOptions[index]">
+              <swipe-item v-for="ele in item">{{ele.title}}</swipe-item>
             </swipe>
           </li>
         </ul>
@@ -15,11 +15,19 @@
   </div>
 </template>
 <script>
+import axios from 'axios'
 import ModuleTitle from './ModuleTitle'
 export default {
   props:['lookActives'],
   created(){
     // console.log(this.lookActives,'lookActives')
+    //请求文章接口
+    axios.get('https://api.360che.com/AppleTV/article.aspx?page=1').then((res) => {
+      if(res.data.result == 1){
+      console.log(res.data,'sunData')
+
+      }
+    })
   },
   components: {
     ModuleTitle
@@ -28,25 +36,32 @@ export default {
     return {
       swipeOptions: [
         {
-          auto: 1000
+          auto: 3900,
+          speed: 3000
         },
         {
-          auto: 2000
+          auto: 4700,
+          speed: 3000
         },
         {
-          auto: 1500
+          auto: 3200,
+          speed: 3000
         },
         {
-          auto: 2500
+          auto: 4800,
+          speed: 3000
         },
         {
-          auto: 5000
+          auto: 6400,
+          speed: 3000
         },
         {
-          auto: 1000
+          auto: 4300,
+          speed: 3000
         },
         {
-          auto: 1000
+          auto: 3500,
+          speed: 3000
         }
       ],
       articalTitle: '用户正在浏览的文章'
@@ -63,7 +78,7 @@ export default {
   border-left: 4px solid #00FFE8;
 }
 .artical-title{
-  padding-left: 80px;
+  padding-left: 70px;
 }
 
 .article-content{
@@ -76,33 +91,6 @@ export default {
   background: url('../assets/NowBrower.png') no-repeat;
   background-size: 476px 330px;
 }
-.wrapper{
-  height:100%;
-  padding-left:20px;
-  /*padding-bottom:10px;*/
-  /*box-shadow: -11px 9px 40px rgba(0,255,232,.1);*/
-  animation: head 3s ease-out 1.2s infinite;
-}
-  @keyframes head {
-    0% {
-      box-shadow: 0px -5px 15px rgba(0,255,232,.2);
-    }
-    20% {
-      box-shadow: -5px 0px 30px rgba(0,255,232,.4);
-    }
-    40% {
-      box-shadow: -9px 5px 45px rgba(0,255,232,.6);
-    }
-    60% {
-      box-shadow: -11px 10px 45px rgba(0,255,232,.6);
-    }
-    80% {
-      box-shadow: -9px 5px 30px rgba(0,255,232,.4);
-    }
-    80% {
-      box-shadow: -5px -5px 15px rgba(0,255,232,.2);
-    }
-  }
 .article-content li .swipe-item{
   white-space: nowrap;
   overflow: hidden;

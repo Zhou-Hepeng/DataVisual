@@ -10,18 +10,31 @@
 </template>
 <script>
 	export default {
-		props:['number'],
 		data(){
 			return {
-				sum:'0'
+				sum:394084647
+
 			}
 		},
 		created(){
-			this.sum = this.number
+			try{
+				let num = localStorage.getItem('num')
+				if(num){
+					this.num = Number(num);
+				}
+			}catch(err){
+				console.log(err)
+			}
+
 		},
 		mounted(){
 			setInterval(() => {
-				this.sum += Math.floor(Math.random() * 50 + 100)
+				this.sum += Math.floor(Math.random() * 100 +1)
+				try{
+					localStorage.setItem('num',this.sum)
+				}catch(err){
+					console.log(err)
+				}
 			},5000)
 		},
 		methods:{

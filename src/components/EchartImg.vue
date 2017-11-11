@@ -1,10 +1,24 @@
 <template>
   <div class="echarts-wrapper">
-    <module-title :title="echartTitle" class="echart-title"></module-title>
+    <div class="artical-title interaction-title">
+      <div class="title-wrapper swiper-container swiper-container-vertical swiper-no-swiping" id="echartImgTitle">
+        <div class="content swiper-wrapper">
+          <div class="title-name swiper-slide" v-for="item in Proportion">
+            {{item.title}}
+          </div>
+        </div>
+      </div>
+    </div>
       <div class="wrapper swiper-container swiper-container-vertical swiper-no-swiping" id="echartSlider">
         <div class="content swiper-wrapper">
-          <div class="swiper-slide" v-for="(ele,index) in Proportion">
-            <chart :options="option" :ref="'pie' + index"></chart>
+          <div class="swiper-slide">
+            <chart :options="option" ref="pie"></chart>
+          </div>
+          <div class="swiper-slide">
+            <chart :options="option1" ref="pie1"></chart>
+          </div>
+          <div class="swiper-slide">
+            <chart :options="option2" ref="pie2"></chart>
           </div>
         </div>
       </div>
@@ -29,8 +43,8 @@ import 'echarts/lib/component/tooltip'
 // import 'echarts/lib/component/visualMap'
 
 import option from './options'
-
-console.log(this.options,'this.options')
+import option1 from './options1'
+import option2 from './options2'
 
 export default {
   props:['Proportion'],
@@ -39,36 +53,22 @@ export default {
     ModuleTitle
   },
   data: () => ({
-    echartTitle: '车系大类的比例',
+    echartTitle: '',
     //数组存储的变量
     option,
+    option1,
+    option2,
     //存储四个数组的数据
     options:[],
     names:[],
+    nihao:false
   }),
   created(){
-    // console.log(this.Proportion,'Proportion')
-    this.Proportion.forEach((ele,index) => {
-      let option = this.option
-      this.options.push(option)
-      // this.options[index].series[0].data = ele.content
-      console.log(ele.content,'ele.content')
-      this.names.push(ele.title)
-    })
-    this.options[0].series[0].data = this.Proportion[0].content
-
-    this.options[1].series[0].data = this.Proportion[1].content
-
-    this.options[2].series[0].data = this.Proportion[2].content
-    // console.log(this.options,'this.options')
-    // console.log(this.names)
   },
-  mounted() {
-    let dataIndex = -1
-    let refs = this.$refs
+  methods:{
+    show(pie){
 
-    for(let key in refs){
-      let pie = refs[key][0]
+       let dataIndex = -1
       let dataLen = pie.options.series[0].data.length
       setInterval(() => {
         pie.dispatchAction({
@@ -91,7 +91,27 @@ export default {
         })
       }, 5000)
     }
+  },
+  mounted() {
+    let refs = this.$refs
 
+      let pie = this.$refs.pie
+      let pie1 = this.$refs.pie1
+      let pie2 = this.$refs.pie2
+      this.show(pie)
+       this.show(pie1)
+        this.show(pie2)
+
+    //右下角文章标题滚动
+    var swiper = new Swiper('#echartImgTitle', {
+        loop:true,
+        spaceBetween: 30,
+        paginationClickable: true,
+        spaceBetween: 0,
+        autoplay: 25000,
+        centeredSlides: true,
+        autoplayDisableOnInteraction: false,
+    });
 
     //循环圆形饼图
     var swiper = new Swiper('#echartSlider', {
@@ -114,6 +134,28 @@ export default {
 }
 .echart-title{
   padding-left: 120px;
+}
+.interaction-title{
+  padding-left: 70px;
+}
+.artical-title{
+  font-size: 20px;
+  color: #00FFE8;
+  letter-spacing: 0;
+  line-height: 44px;
+  text-shadow: 0 0 4px rgba(0,255,232,0.60);
+  height: 54px;
+  text-align: left;
+  background: url('../assets/ModuleBg.png') no-repeat;
+  background-size: 480px 54px;
+}
+.title-wrapper{
+  width:100%;
+  overflow: hidden;
+}
+.title-name{
+  float:left;
+  width:25%;
 }
 .wrapper{
   height:500px;

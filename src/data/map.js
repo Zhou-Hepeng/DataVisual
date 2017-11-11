@@ -1,6 +1,28 @@
+
+import axios from 'axios'
+  let sunData = {};
+  let cityName = [];
+
+  axios.get('https://dealer-api.360che.com/AppleTV/GetClueProvinceList.aspx').then((res) => {
+
+    sunData = res.data.province
+      // this.geoCoordMap = res.data
+      // this.$nextTick(() => {
+      //   this._getMyChart()
+      // })
+
+    console.log(sunData,'sunData')
+  })
+
 let data = [
   { name: '海门', value: 9, selected: false },
   { name: '鄂尔多斯', value: 9, selected: false },
+  { name: '招远', value: 9, selected: false },
+  { name: '海门', value: 9, selected: false },
+  { name: '鄂尔多斯', value: 9, selected: false },
+  { name: '海门', value: 9, selected: false },
+  { name: '鄂尔多斯', value: 9, selected: false },
+  { name: '招远', value: 9, selected: false },
   { name: '招远', value: 9, selected: false },
   { name: '舟山', value: 9, selected: false },
   { name: '齐齐哈尔', value: 9, selected: false },
@@ -395,6 +417,7 @@ function convertData (data) {
       })
     }
   }
+  console.log(res,'resresresresres')
   return res
 }
 
@@ -413,13 +436,13 @@ export default {
     trigger: 'item',
     formatter: params => {
       let name = params.name
+      let value = params.data.value
       console.log(name)
       return `<div style="width:442px;height:150px;background: url(${require('../assets/NoticeBg.png')}) no-repeat;background-size: 100%;">
-        <div style="font-size: 20px;line-height:20px;color: #FFFFFF;padding-top:41px;">手机尾号<span style="color: #FFDF00">${Math.floor(
-          Math.random() * 8996 + 1003
-        )}</span>的<span style="color: #FFDF00">${name}</span>用户正在询价
+        <div style="font-size: 20px;line-height:20px;color: #FFFFFF;padding-top:41px;">手机尾号<span style="color: #FFDF00">${value[0]}</span>的<span style="color: #FFDF00">${name}</span>用户正在询价
       </div>
-      <div style="margin-top:22px;font-size: 24px;color: #FFDF00;">「解放J6P领航版自卸车」</div>
+      <div style="margin-top:22px;font-size: 24px;color: #FFDF00;">「
+    ${value[1]}」</div>
     </div>`
     },
     backgroundColor: 'none',
@@ -462,7 +485,8 @@ export default {
   series: [
     {
       name: '正在询价',
-      type: 'scatter',
+      type: "map",  //mapType可选"scatter"或"map",即选择散点图模式或地图模式（显示省份数据为地图模式，显示城市为散点模式）
+      mapType: 'china',
       coordinateSystem: 'geo',
       data: convertData(data),
       symbolSize: val => val[2] / 10,
@@ -479,7 +503,7 @@ export default {
           },
         },
         emphasis: {
-          show: true
+          show: false
         }
       },
       itemStyle: {
@@ -488,9 +512,14 @@ export default {
           label:{
             show:true
           },
-          areaColor: '#dec313',
-        }
+          areaColor: 'rgba(0,255,232,.6)',
+        },
+      emphasis: {
+        areaColor: '#00FFE8',
+        label:{show:true}
       }
+      },
+      data:[{name: '山东',value: 183 }, {name: '云南',value: 286 },{name: '内蒙古',value: 183 },{name: '内蒙古',value: 150 },{name: '山东',value: 123 }]
     },
     {
       name: 'Top 5',

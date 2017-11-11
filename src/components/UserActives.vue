@@ -4,13 +4,14 @@
     <div class="wrapper">
       <div class="content swiper-container swiper-container-vertical swiper-no-swiping" id="swiper">
         <ul class="user-actives-content swiper-wrapper">
-          <li class="swiper-slide" v-for="item in userActives">「<span class="users">{{item.name}}</span>」{{item.action}}「<span class="posts">{{item.title}}</span>」</li>
+          <li class="swiper-slide" v-for="item in userActives">「<span class="users">{{item.p1}}</span>」{{item.p2}}「<span class="posts">{{item.p3}}</span>」</li>
         </ul>
       </div>
     </div>
   </div>
 </template>
 <script>
+import axios from 'axios'
 import ModuleTitle from './ModuleTitle'
 export default {
   props:['userActives'],
@@ -20,11 +21,14 @@ export default {
   data: () => ({
     userActivesTitle: '用户行为'
   }),
+  created(){
+
+  },
   mounted(){
     //新闻条滚动
     let swiperNew = new Swiper('#swiper', {
         direction : 'vertical',
-        autoplay: 3000,
+        autoplay: 1000,
         centeredSlides: true,
         slidesPerView: 5,
         loop:true
@@ -40,7 +44,7 @@ export default {
   border-left: 4px solid #00FFE8;
 }
 .user-actives-title{
-  padding-left: 120px;
+  padding-left: 70px;
 }
 .wrapper{
   position: relative;
@@ -60,8 +64,8 @@ export default {
   overflow: hidden;
 }
 .user-actives-content{
-  height: 1200%;
   overflow: hidden;
+  transition: all 1s ease-out;
 }
 .user-actives-content li{
   display: block;

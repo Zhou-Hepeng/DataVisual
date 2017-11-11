@@ -5,6 +5,8 @@
 </template>
 
 <script>
+
+import axios from 'axios'
 import ECharts from 'vue-echarts/components/ECharts.vue'
 import 'echarts/lib/chart/bar'
 import 'echarts/lib/component/tooltip'
@@ -20,80 +22,91 @@ import 'echarts/lib/component/polar'
 import 'echarts/lib/component/legend'
 import 'echarts/lib/component/title'
 import 'echarts/lib/component/visualMap'
-
-//引入中国地图
-// Map of China
+// 引入名称数据
+import map from './map.js'
+// 引入中国地图
 import chinaMap from '../data/china.json'
-// registering map data
-ECharts.registerMap('china', chinaMap)
 
-//引入名称数据
-import map from '../data/map.js'
+import geoCoordMap from './city.js'
+
+import dataTemp from './data.js'
+ECharts.registerMap('china', chinaMap)
 
 export default {
   components: {
     chart: ECharts
   },
-  data () {
+  data() {
     return {
-      map,
-      connected: false,
+      map
     }
   },
-  name: 'app',
-  created(){
-    // console.log(ECharts)
-    // ECharts.methods.mergeOptions({
-    //   color: ['#fff'],
-    // })
+  created() {
+    this.getProvince()
   },
-  mounted(){
-    let dataIndex = -1
-    let map = this.$refs.map
-    let dataLen = map.options.series[0].data.length
-
-    setInterval(() => {
-      map.dispatchAction({
-        type: 'downplay',
-        seriesIndex: 0,
-        dataIndex,
-        symbolSize: 40,
-      })
-      dataIndex = (dataIndex + 1) % dataLen
-      map.dispatchAction({
-        type: 'highlight',
-        seriesIndex: 0,
-        dataIndex,
-        symbolSize: 40,
-        data:{
-          value:99
+  mounted() {},
+  methods: {
+    convertData(data) {
+      let res = []
+      for (let i = 0; i < data.length; i++) {
+        let geoCoord = geoCoordMap[data[i].name]
+        if (geoCoord) {
+          res.push({
+            name: data[i].name,
+            value: geoCoord.concat(data[i].value)
+          })
         }
-      })
-      // 显示 tooltip
-      map.dispatchAction({
-        type: 'showTip',
-        seriesIndex: 0,
-        dataIndex,
-        symbolSize: 40,
-      })
-      //显示默认地区
-      // var selected = param.selected;
-      // var str = '当前选择： ';
-      // for (var p in selected) {
-      //     if (selected[p]) {
-      //         str += p + ' ';
-      //     }
-      // }
-    }, 5000)
-    this.connected = true
-  },
-  watch: {
-    connected: {
-      handler (value) {
-        ECharts[value ? 'connect' : 'disconnect']('radiance')
       }
+      return res
+    },
+    getProvince() {
+      //请求文章接口
+      axios.get('https://dealer-api.360che.com/AppleTV/GetClueProvinceList.aspx').then((res) => {
+        let _Data = res.data.province
+        dataTemp.forEach((item, index) => {
+          if(_Data[index]){
+            dataTemp[index].value = [_Data[index].tel, _Data[index].truckname]
+          }
+        })
+        let data = this.convertData(dataTemp)
+        let o = {
+          series: [
+            {
+              data: data
+            }
+          ]
+        }
+        this.$refs.map.mergeOptions(o)
+        this.loop(data)
+
+        console.log(data)
+      })
+    },
+    loop(data) {
+      let dataIndex = -1
+      let myMap = this.$refs.map
+      let dataLen = data.length
+      setInterval(() => {
+        myMap.dispatchAction({
+          type: 'downplay',
+          seriesIndex: 0,
+          dataIndex
+        })
+        dataIndex = (dataIndex + 1) % dataLen
+        myMap.dispatchAction({
+          type: 'highlight',
+          seriesIndex: 0,
+          dataIndex
+        })
+        // 显示 tooltip
+        myMap.dispatchAction({
+          type: 'showTip',
+          seriesIndex: 0,
+          dataIndex
+        })
+      }, 5000)
     }
-  },
+  }
 }
 </script>
 

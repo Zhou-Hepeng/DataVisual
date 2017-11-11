@@ -1,13 +1,21 @@
 <template>
   <div class="rank-videos">
-    <module-title :title="videoTitle" class="rank-videos-title"></module-title>
+     <div class="artical-title interaction-title">
+      <div class="title-wrapper swiper-container swiper-container-vertical swiper-no-swiping" id="userActuvesTitle">
+        <div class="content swiper-wrapper">
+          <div class="title-name swiper-slide" v-for="item in rankVideos.name">
+            {{item}}
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="rank-videos-content">
       <div class="wrapper swiper-container swiper-container-vertical swiper-no-swiping" id="swiperContent">
         <div class="content swiper-wrapper">
           <ul class="swiper-slide" v-for="item in rankVideos.content">
             <li v-for="(ele,index) in item">
               <em>{{index+1}}</em>
-              <span>{{ele}}</span>
+              <span>{{ele.title}}</span>
             </li>
           </ul>
         </div>
@@ -35,6 +43,18 @@ export default {
         centeredSlides: true,
         autoplayDisableOnInteraction: false,
     });
+
+
+    //右下角文章标题滚动
+    var swiper = new Swiper('#userActuvesTitle', {
+        spaceBetween: 30,
+        loop:true,
+        paginationClickable: true,
+        spaceBetween: 0,
+        autoplay: 3000,
+        centeredSlides: true,
+        autoplayDisableOnInteraction: false,
+    });
   }
 }
 </script>
@@ -46,6 +66,28 @@ export default {
 }
 .rank-videos-title{
   padding-left: 70px;
+}
+.interaction-title{
+  padding-left: 70px;
+}
+.artical-title{
+  font-size: 20px;
+  color: #00FFE8;
+  letter-spacing: 0;
+  line-height: 44px;
+  text-shadow: 0 0 4px rgba(0,255,232,0.60);
+  height: 54px;
+  text-align: left;
+  background: url('../assets/ModuleBg.png') no-repeat;
+  background-size: 480px 54px;
+}
+.title-wrapper{
+  width:100%;
+  overflow: hidden;
+}
+.title-name{
+  float:left;
+  width:25%;
 }
 .rank-videos-content{
   height: 210px;
